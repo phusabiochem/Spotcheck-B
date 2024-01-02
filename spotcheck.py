@@ -212,16 +212,16 @@ if not os.path.exists(parent_dir + "/Desktop/Spotcheck_Results"):
 results_path = parent_dir + "/Desktop/Spotcheck_Results/"
 
 # Spotcheck results qualitative path
-if not os.path.exists(results_path + "Screening"):
-    f = os.path.join(results_path, "Screening")
-    os.mkdir(f)
-results_qualitative_path = results_path + "Screening/"
+# ~ if not os.path.exists(results_path + "Screening"):
+    # ~ f = os.path.join(results_path, "Screening")
+    # ~ os.mkdir(f)
+# ~ results_qualitative_path = results_path + "Screening/"
 
 # Spotcheck results quantitative path
-if not os.path.exists(results_path + "Quantitative"):
-    f = os.path.join(results_path, "Quantitative")
-    os.mkdir(f)
-results_quantitative_path = results_path + "Quantitative/"
+# ~ if not os.path.exists(results_path + "Quantitative"):
+    # ~ f = os.path.join(results_path, "Quantitative")
+    # ~ os.mkdir(f)
+# ~ results_quantitative_path = results_path + "Quantitative/"
 
 # Programs results path
 if not os.path.exists(parent_dir + "/Desktop/Spotcheck_Programs"):
@@ -996,7 +996,7 @@ class SystemCheckFrame(Frame):
                 average_current_intensity < average_base_intensity - average_base_intensity*30/100):
                     for i in range(0,48):
                         result_label[i]['bg'] = RESULT_LABEL_ERROR_BGD_COLOR
-                    self.err = 2
+                    self.err = 0
 
             # Error handle
             if(self.err == 1):
@@ -4579,9 +4579,17 @@ class QualitativeAnalysisFrame0(Frame):
             msg = messagebox.askokcancel("","Please make sure no sample is placed in the device !")
             if(msg == True):
                 ### NEW ADD - START ###
-                self.create_time = strftime(" %y-%m-%d %H.%M.%S")
-                self.result_folder_name = self.experiment_name + self.create_time
-                self.result_folder_path = os.path.join(results_qualitative_path, self.result_folder_name)
+                self.create_time = strftime("%y-%m-%d") 
+                self.result_folder_name_0 = self.create_time
+                
+                if not os.path.exists(results_path + self.result_folder_name_0):
+                     self.result_folder_path_0  = os.path.join(results_path , self.result_folder_name_0)
+                     os.mkdir(self.result_folder_path_0)
+                else:
+                    self.result_folder_path_0 = results_path +  self.result_folder_name_0
+                    
+                self.result_folder_name = self.experiment_name
+                self.result_folder_path = os.path.join(self.result_folder_path_0, self.result_folder_name)
                 os.mkdir(self.result_folder_path)
                 print(self.result_folder_path)
                 
@@ -4941,12 +4949,13 @@ class IDCreateFrame(Frame):
                 if(msg=="yes"):
                     file_name = self.base_window.qualitative_analysis_0.experiment_name
                     file_create_done = 1
-            elif(self.direct_create == 1):
-                wb.save(id_path + '/' + self.base_window.quantitative_analysis_0.experiment_name + '.xlsm')
-                msg = messagebox.askquestion("","File has been created.\n Do you want to go back to the previous step?")
-                if(msg=="yes"):
-                    file_name = self.base_window.quantitative_analysis_0.experiment_name
-                    file_create_done = 1
+                    self.base_window.qualitative_analysis_2.id_file_path = id_path + '/' + self.base_window.qualitative_analysis_0.experiment_name + '.xlsm'
+            # ~ elif(self.direct_create == 1):
+                # ~ wb.save(id_path + '/' + self.base_window.quantitative_analysis_0.experiment_name + '.xlsm')
+                # ~ msg = messagebox.askquestion("","File has been created.\n Do you want to go back to the previous step?")
+                # ~ if(msg=="yes"):
+                    # ~ file_name = self.base_window.quantitative_analysis_0.experiment_name
+                    # ~ file_create_done = 1
             else:
                 path = filedialog.asksaveasfilename(initialdir = id_path + '/', defaultextension='.xlsm')
                 if path is not None:
@@ -5016,6 +5025,7 @@ class IDCreateFrame(Frame):
                     
                     self.base_window.qualitative_analysis_2.id_label[47]['text'] = 'B'
                     self.base_window.qualitative_analysis_2.id_label[47]['bg'] = 'blue'
+                    
                     
                     self.back_clicked()
                     msg = messagebox.askokcancel("","Now you can put samples in and press Next to analyze.")
@@ -6401,7 +6411,8 @@ class MainMenu(Frame):
         self.title_label.pack(expand=TRUE)
 
         self.screening_button = Button(self.work_frame,
-                                    text = "SCREENING MODE",
+                                    #text = "SCREENING MODE",
+                                    text = "ANALYSIS",
                                     font = MAIN_MENU_BUTTON_FONT,
                                     width = MAIN_MENU_BUTTON_WIDTH,
                                     height = MAIN_MENU_BUTTON_HEIGHT,
@@ -6420,7 +6431,7 @@ class MainMenu(Frame):
                                     fg = MAIN_MENU_BUTTON_TXT_COLOR,
                                     borderwidth = 0,
                                     command = self.quantitative_clicked)
-        self.quantitative_button.grid(row=0, column=1, ipadx=20, ipady=10, padx=100, pady=130)
+        #self.quantitative_button.grid(row=0, column=1, ipadx=20, ipady=10, padx=100, pady=130)
 
         self.view_result_button = Button(self.button_frame,
                                     text = "View Results",
