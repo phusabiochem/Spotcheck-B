@@ -2530,16 +2530,16 @@ class QualitativeAnalysisFrame3(Frame):
             self.process_label.destroy()
 
             tab_control = ttk.Notebook(self.work_frame)
-            result_tab = Frame(tab_control, bg=MAIN_FUNCTION_FRAME_BGD_COLOR)
+            self.result_tab = Frame(tab_control, bg=MAIN_FUNCTION_FRAME_BGD_COLOR)
             report_tab = Frame(tab_control, bg=MAIN_FUNCTION_FRAME_BGD_COLOR)
             image_tab = Frame(tab_control, bg=MAIN_FUNCTION_FRAME_BGD_COLOR)
 
-            tab_control.add(result_tab, text="Result")
+            tab_control.add(self.result_tab, text="Result")
             tab_control.add(report_tab, text="Report")
             tab_control.add(image_tab, text="Images")
             tab_control.grid(row=0, column=0, padx=0, pady=1, sticky=EW)
 
-            self.check_result_frame = Frame(result_tab, bg=RESULT_TABLE_FRAME_BGD_COLOR)
+            self.check_result_frame = Frame(self.result_tab, bg=RESULT_TABLE_FRAME_BGD_COLOR)
             self.check_result_frame.grid(row=0, column=0, padx=76)
 
             # ~ Pmw.initialise(self.base_window)
@@ -2597,7 +2597,7 @@ class QualitativeAnalysisFrame3(Frame):
             self.result_label[47]['bg'] = 'blue'
             
                         
-            self.annotate_result_frame = Frame(result_tab, bg=MAIN_FUNCTION_FRAME_BGD_COLOR)
+            self.annotate_result_frame = Frame(self.result_tab, bg=MAIN_FUNCTION_FRAME_BGD_COLOR)
             self.annotate_result_frame.grid(row=0, column=1, padx=60)
             
             negative_label = Label(self.annotate_result_frame, bg=NEGATIVE_COLOR, width=4, height=2)
@@ -3174,39 +3174,64 @@ class QualitativeAnalysisFrame3(Frame):
                 # ~ messagebox.showerror("","ERR 04")
                 # ~ pass
                 
+    def update_result(self):
+        self.check_result_frame.destroy()
+        self.check_result_frame = Frame(self.result_tab, bg=RESULT_TABLE_FRAME_BGD_COLOR)
+        self.check_result_frame.grid(row=0, column=0, padx=76)
+
+        r=0
+        c=-1
+        for i in range(0,48):
+            c+=1
+            if(c>5):
+                c=0
+                r+=1
+            self.result_label[i] = Label(self.check_result_frame,
+                                    width=6,
+                                    height=3,
+                                    # ~ bg = RESULT_LABEL_BGD_COLOR,
+                                    font = RESULT_LABEL_TXT_FONT)
+
+            # ~ self.tooltip[i] = Pmw.Balloon(self.base_window)
+            # ~ self.tooltip[i].bind(result_label[i], self.base_window.qualitative_analysis_2.id_list[i])
+            
+            if(self.thr_value.get() == 0): 
+                if(self.base_window.qualitative_analysis_2.id_list[i] != 'N/A'):
+                    self.result_label[i]['text'] = round(self.result[i]/self.base_window.system_check.threshold,2)
+                    if(float(self.result_label[i]['text']) < self.pfi_value * self.base_window.main_menu.num1):
+                        self.result_label[i]['bg'] = NEGATIVE_COLOR
+                    elif(float(self.result_label[i]['text']) < self.pfi_value * self.base_window.main_menu.num1 * self.base_window.main_menu.num3):
+                        self.result_label[i]['bg'] = LOW_COPY_COLOR
+                    else:
+                        self.result_label[i]['bg'] = POSITIVE_COLOR
+
+                else:
+                    self.result_label[i]['text'] = "N/A"
+                    self.result_label[i]['bg'] = NA_COLOR
+            else:
+                if(self.base_window.qualitative_analysis_2.id_list[i] != 'N/A'):
+                    self.result_label[i]['text'] = round(self.result[i]/self.base_window.system_check.threshold,2)
+                    if(float(self.result_label[i]['text']) < self.pfi_value * self.base_window.main_menu.num2):
+                        self.result_label[i]['bg'] = NEGATIVE_COLOR
+                    elif(float(self.result_label[i]['text']) < self.pfi_value * self.base_window.main_menu.num2 * self.base_window.main_menu.num3):
+                        self.result_label[i]['bg'] = LOW_COPY_COLOR
+                    else:
+                        self.result_label[i]['bg'] = POSITIVE_COLOR
+
+                else:
+                    self.result_label[i]['text'] = "N/A"
+                    self.result_label[i]['bg'] = NA_COLOR
+            self.result_label[i].grid(row=r,column=c, padx=1, pady=1)
+            
+        self.result_label[47]['text'] = 'B'
+        self.result_label[47]['bg'] = 'blue'
+    
+        self.base_window.update_idletasks()
+                
     def thr_choose(self):
         print("thr_value = ", self.thr_value.get()) 
-        if(self.thr_value.get() == 0):
-            if(self.base_window.qualitative_analysis_2.id_list[i] != 'N/A'):
-                self.result_label[i]['text'] = round(self.result[i]/self.base_window.system_check.threshold,2)
-                if(float(self.result_label[i]['text']) < self.pfi_value * self.base_window.main_menu.num1):
-                    self.result_label[i]['bg'] = NEGATIVE_COLOR
-                elif(float(self.result_label[i]['text']) < self.pfi_value * self.base_window.main_menu.num1 * self.base_window.main_menu.num3):
-                    self.result_label[i]['bg'] = LOW_COPY_COLOR
-                else:
-                    self.result_label[i]['bg'] = POSITIVE_COLOR
-
-            else:
-                self.result_label[i]['text'] = "N/A"
-            self.result_label[i]['bg'] = NA_COLOR
-        else:
-            if(self.base_window.qualitative_analysis_2.id_list[i] != 'N/A'):
-                self.result_label[i]['text'] = round(self.result[i]/self.base_window.system_check.threshold,2)
-                if(float(self.result_label[i]['text']) < self.pfi_value * self.base_window.main_menu.num2):
-                    self.result_label[i]['bg'] = NEGATIVE_COLOR
-                elif(float(self.result_label[i]['text']) < self.pfi_value * self.base_window.main_menu.num2 * self.base_window.main_menu.num3):
-                    self.result_label[i]['bg'] = LOW_COPY_COLOR
-                else:
-                    self.result_label[i]['bg'] = POSITIVE_COLOR
-            else:
-                self.result_label[i]['text'] = "N/A"
-                self.result_label[i]['bg'] = NA_COLOR
+        self.base_window.update_frame()
         
-        self.result_label[47]['text'] = 'B'
-        self.result_label[47]['bg'] = 'blue'   
-        self.base_window.update_idletasks()
-        
-    
     def server_check(self):
         self.base_window.server_setting.check_status()
         if(self.base_window.server_setting.server_active==1):
@@ -7016,6 +7041,12 @@ class MainWindow(Tk):
     def switch_page(self):
         self.frame_list[self.page_num].tkraise()
         self.frame_list[self.page_num].pack(expand=TRUE, fill=BOTH)
+    def update_frame(self):
+        self.qualitative_analysis_3.update_result()
+        self.qualitative_analysis_3.update()
+        self.qualitative_analysis_3.update_idletasks()
+        # ~ self.update()
+        # ~ self.update_idletasks()
 
 if __name__ == "__main__":
     app = MainWindow()
