@@ -920,11 +920,11 @@ class SystemCheckFrame(Frame):
 
                 sheet[pos] = self.result[i]
 
-            average_current_intensity = round(sum(self.result)/len(self.result),1)
-            self.threshold = round(average_current_intensity*a+b,1)
+            self.average_current_intensity = round(sum(self.result)/len(self.result),1)
+            self.threshold = round(self.average_current_intensity*a+b,1)
             print("threshold: ", self.threshold)
 
-            sheet['I2'] = "Average: " + str(average_current_intensity)
+            sheet['I2'] = "Average: " + str(self.average_current_intensity)
             sheet['I3'] = "Threshold: " + str(self.threshold)
 
             if(self.mode_check == 0):
@@ -947,9 +947,9 @@ class SystemCheckFrame(Frame):
             self.process_label.destroy()
 
             average_base_intensity = round(sum(base_intensity)/len(base_intensity),1)
-            tmp_value = round(average_base_intensity/average_current_intensity,2)
+            tmp_value = round(average_base_intensity/self.average_current_intensity,2)
             print("average_base_intensity: ", average_base_intensity)
-            print("average_current_intensity: ", average_current_intensity)
+            print("average_current_intensity: ", self.average_current_intensity)
 
             self.check_result_frame = Frame(self.work_frame, bg=RESULT_TABLE_FRAME_BGD_COLOR)
             self.check_result_frame.pack()
@@ -993,8 +993,8 @@ class SystemCheckFrame(Frame):
                     self.err = 1
 
             # Check system error 2
-            if(average_current_intensity > average_base_intensity + average_base_intensity*30/100 or
-                average_current_intensity < average_base_intensity - average_base_intensity*30/100):
+            if(self.average_current_intensity > average_base_intensity + average_base_intensity*30/100 or
+                self.average_current_intensity < average_base_intensity - average_base_intensity*30/100):
                     for i in range(0,48):
                         result_label[i]['bg'] = RESULT_LABEL_ERROR_BGD_COLOR
                     self.err = 0
@@ -2545,7 +2545,8 @@ class QualitativeAnalysisFrame3(Frame):
             # ~ Pmw.initialise(self.base_window)
             # ~ self.tooltip = list(range(48))
             
-            self.pfi_value = round(self.result[47]/self.base_window.system_check.threshold,2)
+            #self.pfi_value = round(self.result[47]/self.base_window.system_check.threshold,2)
+            self.pfi_value = round(self.base_window.system_check.average_current_intensity/self.base_window.system_check.threshold,2)
 
             self.result_label = list(range(48))
             r=0
@@ -2593,8 +2594,8 @@ class QualitativeAnalysisFrame3(Frame):
                         self.result_label[i]['bg'] = NA_COLOR
                 self.result_label[i].grid(row=r,column=c, padx=1, pady=1)
                 
-            self.result_label[47]['text'] = 'B'
-            self.result_label[47]['bg'] = 'blue'
+            # ~ self.result_label[47]['text'] = 'B'
+            # ~ self.result_label[47]['bg'] = 'blue'
             
                         
             self.annotate_result_frame = Frame(self.result_tab, bg=MAIN_FUNCTION_FRAME_BGD_COLOR)
@@ -3079,8 +3080,8 @@ class QualitativeAnalysisFrame3(Frame):
                     sheet['E'+str(i+52)].protection = Protection(locked=False, hidden=False)
                     sheet['F'+str(i+52)].protection = Protection(locked=False, hidden=False)
             
-            sheet['D59'] = 'B'
-            sheet['D'+str(i+52)].fill = PatternFill(start_color='FFFFFFFF', end_color='FFFFFFFF', fill_type='solid')
+            # ~ sheet['D59'] = 'B'
+            # ~ sheet['D'+str(i+52)].fill = PatternFill(start_color='FFFFFFFF', end_color='FFFFFFFF', fill_type='solid')
             sheet.print_area = 'A1:G70'
             # ~ wb.save(self.base_window.qualitative_analysis_1.analysis_result_folder + '/' + self.base_window.qualitative_analysis_0.experiment_name + '.xlsm')
             wb.save(self.base_window.qualitative_analysis_0.result_folder_path +  '/' + self.base_window.qualitative_analysis_0.experiment_name + '.xlsx')
@@ -3096,7 +3097,7 @@ class QualitativeAnalysisFrame3(Frame):
             result_button_list = list(range(49))
             position_button_list = list(range(49))
 
-            for i in range(0,48):
+            for i in range(0,49):
                 sample_pos = 'B' + str(i+11)
                 sample_button_list[i] = Button(self.report_frame.scrollable_frame,
                         fg = LABEL_TXT_COLOR,
@@ -3223,8 +3224,8 @@ class QualitativeAnalysisFrame3(Frame):
                     self.result_label[i]['bg'] = NA_COLOR
             self.result_label[i].grid(row=r,column=c, padx=1, pady=1)
             
-        self.result_label[47]['text'] = 'B'
-        self.result_label[47]['bg'] = 'blue'
+        # ~ self.result_label[47]['text'] = 'B'
+        # ~ self.result_label[47]['bg'] = 'blue'
     
         self.base_window.update_idletasks()
                 
@@ -4232,7 +4233,7 @@ class QualitativeAnalysisFrame2(Frame):
                         self.id_label[i]['bg'] = "grey80"
 
                     self.id_label[i].grid(row=r, column=c, padx=1, pady=1)
-                self.id_label[47]['bg'] = "blue"
+                #self.id_label[47]['bg'] = "blue"
                 
                 msg = messagebox.askokcancel("","Now you can put samples in and press Next to analyze.")
 
@@ -4904,13 +4905,14 @@ class IDCreateFrame(Frame):
                                         text = '#',
                                         width = SAMPLE_BUTTON_WIDTH,
                                         height = SAMPLE_BUTTON_HEIGHT)
-            if(i!=47):
-                self.well_button[i]['command'] = partial(self.well_button_clicked, i)
+            # ~ if(i!=47):
+            self.well_button[i]['command'] = partial(self.well_button_clicked, i)
             self.well_button[i].grid(row=r, column=c, padx=2, pady=2)
         
-        self.well_button[47]['bg'] = "blue"
-        self.well_button[47]['text'] = "B"
-        self.well_button[47]['state'] = "disabled"
+        # ~ self.well_button[47]['bg'] = "blue"
+        # ~ self.well_button[47]['text'] = "B"
+        # ~ self.well_button[47]['state'] = "disabled"
+        
         # Properties frame
         self.property_frame = Frame(self.work_frame, bg=SAMPLE_BUTTON_FRAME_BDG_COLOR, width=495)
         self.property_frame.pack(fill=BOTH, expand=TRUE, side=RIGHT)
@@ -4969,14 +4971,14 @@ class IDCreateFrame(Frame):
 
     def well_button_clicked(self,n):
         if(self.well_button[n]['bg'] != SAMPLE_BUTTON_DONE_BGD_COLOR):
-            for k in range (0,47):
+            for k in range (0,48):
                 if(self.well_button[k]['bg'] != SAMPLE_BUTTON_DONE_BGD_COLOR and self.well_button[k]['bg'] != SAMPLE_BUTTON_TMP_BGD_COLOR):
                     self.well_button[k]['bg'] = SAMPLE_BUTTON_BGD_COLOR
                 else:
                     self.well_button[k]['bg'] = SAMPLE_BUTTON_DONE_BGD_COLOR
             self.well_button[n]['bg'] = SAMPLE_BUTTON_CHOOSE_BGD_COLOR
         else:
-            for k in range (0,47):
+            for k in range (0,48):
                 if(self.well_button[k]['bg'] != SAMPLE_BUTTON_DONE_BGD_COLOR and self.well_button[k]['bg'] != SAMPLE_BUTTON_TMP_BGD_COLOR):
                     self.well_button[k]['bg'] = SAMPLE_BUTTON_BGD_COLOR
                 if(self.well_button[k]['bg'] == SAMPLE_BUTTON_TMP_BGD_COLOR):
@@ -5003,7 +5005,7 @@ class IDCreateFrame(Frame):
                         self.well_button_clicked(4)
                     elif(n==46):
                         self.well_button_clicked(5)
-                    elif(n==41):
+                    elif(n==47):
                         self.well_button_clicked(0)
                     else:
                         self.well_button_clicked(n+6)
@@ -5083,16 +5085,16 @@ class IDCreateFrame(Frame):
                     j=4
                 elif(i==40):
                     j=5
-                #elif(i==47):
-                #   j=0
+                # ~ elif(i==47):
+                    # ~ j=0
                     
                 pos = 'B' + str(i+12)
                 self.well_button[j]['text'] = sheet[pos].value
                 if(self.well_button[j]['text'] == "N/A"):
                     self.well_button[j]['bg'] = SAMPLE_BUTTON_BGD_COLOR
                 else:
-                    if(i!=47):
-                        self.well_button[j]['bg'] = SAMPLE_BUTTON_DONE_BGD_COLOR
+                    # ~ if(i!=47):
+                    self.well_button[j]['bg'] = SAMPLE_BUTTON_DONE_BGD_COLOR
                 
                 j=j+6
                 
@@ -5199,7 +5201,7 @@ class IDCreateFrame(Frame):
                 if(self.direct_create == 0): #create file with create module from main menu
                     self.back_clicked()
                 elif(self.direct_create==1): #create file with create module from qualitative_analysis_2
-                    for i in range(0,47):
+                    for i in range(0,48):
                         if(self.well_button[i]['text'][0] != '#'):
                             self.base_window.qualitative_analysis_2.id_list[i] = self.well_button[i]['text']
                         else:
@@ -5246,15 +5248,15 @@ class IDCreateFrame(Frame):
 
                         self.base_window.qualitative_analysis_2.id_label[i].grid(row=r, column=c, padx=1, pady=1)
                     
-                    self.base_window.qualitative_analysis_2.id_label[47]['text'] = 'B'
-                    self.base_window.qualitative_analysis_2.id_label[47]['bg'] = 'blue'
+                    # ~ self.base_window.qualitative_analysis_2.id_label[47]['text'] = 'B'
+                    # ~ self.base_window.qualitative_analysis_2.id_label[47]['bg'] = 'blue'
                     
                     
                     self.back_clicked()
                     msg = messagebox.askokcancel("","Now you can put samples in and press Next to analyze.")
 
                 elif(self.direct_create==2):
-                    for i in range(0,47):
+                    for i in range(0,48):
                         if(self.well_button[i]['text'][0] != '#'):
                             self.base_window.quantitative_analysis_2.id_list[i] = self.well_button[i]['text']
                         else:
@@ -5330,12 +5332,12 @@ class IDCreateFrame(Frame):
                                         text = '#',
                                         width = SAMPLE_BUTTON_WIDTH,
                                         height = SAMPLE_BUTTON_HEIGHT)
-            if(i!=47):
-                self.well_button[i]['command'] = partial(self.well_button_clicked, i)
+            # ~ if(i!=47):
+            self.well_button[i]['command'] = partial(self.well_button_clicked, i)
             self.well_button[i].grid(row=r, column=c, padx=2, pady=2)
-        self.well_button[47]['bg'] = "blue"
-        self.well_button[47]['text'] = "B"
-        self.well_button[47]['state'] = "disabled"
+        # ~ self.well_button[47]['bg'] = "blue"
+        # ~ self.well_button[47]['text'] = "B"
+        # ~ self.well_button[47]['state'] = "disabled"
         
         # Properties frame
         self.property_frame = Frame(self.work_frame, bg=SAMPLE_BUTTON_FRAME_BDG_COLOR, width=495)
@@ -6851,14 +6853,20 @@ class MainMenu(Frame):
         self.base_window.switch_page()
 
     def view_result_clicked(self):
-        self.threshold_label_frame.place_forget()
+        try:
+            self.threshold_label_frame.place_forget()
+        except:
+            pass
         
         self.base_window.forget_page()
         self.base_window.page_num = self.base_window.frame_list.index(self.base_window.view_results)
         self.base_window.switch_page()
 
     def set_id_clicked(self):
-        self.threshold_label_frame.place_forget()
+        try:
+            self.threshold_label_frame.place_forget()
+        except:
+            pass
         
         self.base_window.forget_page()
         self.base_window.page_num = self.base_window.frame_list.index(self.base_window.id_create)
