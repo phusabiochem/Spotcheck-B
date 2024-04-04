@@ -186,22 +186,22 @@ print("working_dir: ", working_dir)
 print("parent_dir: ", parent_dir)
 ##### In Spotcheck folder - Start #####
 # Programs path
-if not os.path.exists(working_dir + "/Programs"):
-    f = os.path.join(working_dir + '/', "Programs")
-    os.mkdir(f)
-programs_path = working_dir + "/Programs/"
+# ~ if not os.path.exists(working_dir + "/Programs"):
+    # ~ f = os.path.join(working_dir + '/', "Programs")
+    # ~ os.mkdir(f)
+# ~ programs_path = working_dir + "/Programs/"
 
-# Programs qualitaitve
-if not os.path.exists(programs_path + "Screening"):
-    f = os.path.join(programs_path, "Screening")
-    os.mkdir(f)
-programs_qualitative_path = programs_path + "Screening/"
+# ~ # Programs qualitaitve
+# ~ if not os.path.exists(programs_path + "Screening"):
+    # ~ f = os.path.join(programs_path, "Screening")
+    # ~ os.mkdir(f)
+# ~ programs_qualitative_path = programs_path + "Screening/"
 
-# Programs quantitaitve
-if not os.path.exists(programs_path + "/Quantitative"):
-    f = os.path.join(programs_path + '/', "Quantitative")
-    os.mkdir(f)
-programs_quantitative_path = programs_path + "Quantitative/"
+# ~ # Programs quantitaitve
+# ~ if not os.path.exists(programs_path + "/Quantitative"):
+    # ~ f = os.path.join(programs_path + '/', "Quantitative")
+    # ~ os.mkdir(f)
+# ~ programs_quantitative_path = programs_path + "Quantitative/"
 ##### In Spotcheck folder - End #####
 
 ##### At Desktop - Start #####
@@ -241,7 +241,6 @@ if not os.path.exists(results_programs_path + "Quantitative"):
     os.mkdir(f)
 results_programs_quantitative_path = results_programs_path + "Quantitative/"
 
-
 # Spotcheck ID path
 if not os.path.exists(parent_dir + "/Desktop/Spotcheck_ID"):
     f = os.path.join(parent_dir + "/Desktop/", "Spotcheck_ID")
@@ -266,6 +265,12 @@ if not os.path.exists(parent_dir + "/Desktop/Spotcheck_ID/Spotcheck_ID_Old"):
     f = os.path.join(parent_dir + "/Desktop/Spotcheck_ID/", "Spotcheck_ID_Old")
     os.mkdir(f)
 id_old_path = parent_dir + "/Desktop/Spotcheck_ID/Spotcheck_ID_Old/"
+
+# System Check Path
+if not os.path.exists(parent_dir + "/Desktop/System_Check"):
+    f = os.path.join(parent_dir + '/Desktop/', "System_Check")
+    os.mkdir(f)
+system_check_path = parent_dir + "/Desktop/System_Check/"
 ##### At Desktop - End #####
 ##### CHECK FOLDER EXISTS - END #####
 
@@ -398,7 +403,6 @@ print('NUM2_2: ', NUM2_2)
 print('NUM2_3: ', NUM2_3)
 ##### MULTIPLIER HANDLE 2 - END #####
 
-
 ##### EMAIL HANDLE - START #####
 if not os.path.exists(working_dir + "/.email.txt"):
     fw = open(working_dir + "/.email.txt",'w')
@@ -415,8 +419,22 @@ else:
     fr = open(working_dir + "/.server.txt","r")
     server_active_0 = int(fr.readline().strip())
     fr.close()
-    
 ##### SERVER HANDLE - END #####
+
+##### SYSTEM CHECK HANDLE - START #####
+if not os.path.exists(working_dir + "/.system.txt"):
+    fw = open(working_dir + "/.system.txt",'w')
+    fw.writelines(["01\n","01\n", "24\n","00\n", "00\n", "00\n", "1.11\n"])
+    fw.close()
+fr = open(working_dir + "/.system.txt","r")
+last_checkDay = int(fr.readline())
+last_checkMonth = int(fr.readline())
+last_checkYear = int(fr.readline())
+last_checkHour = int(fr.readline())
+last_checkMinute = int(fr.readline())
+last_checkSecond = int(fr.readline())
+last_checkValue = float(fr.readline())
+##### SYSTEM CHECK HANDLE - STOP ##### 
 
 
 class ScrollableFrame(Frame):
@@ -683,8 +701,8 @@ class SystemCheckFrame(Frame):
         self.base_window = container
 
         self.err = 0
-        self.mode_check = 0 # 0 --> create qualitative program
-                            # 1 --> analysis qualitative program
+        self.mode_check = 0 # 0 --> first check when open app -> back to main menu if check ok
+                            # 1 --> check when start analysis -> back to qualitative analysis 0 if check ok
                             # 2 --> create quantitative program
                             # 3 --> analysis quantitative program
 
@@ -708,27 +726,25 @@ class SystemCheckFrame(Frame):
 
 
         # In button frame
-        self.back_button = Button(self.button_frame,
-                                text = "Back",
-                                font = SWITCH_PAGE_BUTTON_FONT,
-                                # width = SWITCH_PAGE_BUTTON_WIDTH,
-                                # height = SWITCH_PAGE_BUTTON_HEIGHT,
-                                bg = SWITCH_PAGE_BUTTON_BGD_COLOR,
-                                fg = SWITCH_PAGE_BUTTON_TXT_COLOR,
-                                borderwidth = 0,
-                                command = self.back_clicked)
-        self.back_button.pack(ipadx=30, ipady=10, side=LEFT)
+        # ~ self.back_button = Button(self.button_frame,
+                                # ~ text = "Back",
+                                # ~ font = SWITCH_PAGE_BUTTON_FONT,
+                                # ~ # width = SWITCH_PAGE_BUTTON_WIDTH,
+                                # ~ # height = SWITCH_PAGE_BUTTON_HEIGHT,
+                                # ~ bg = SWITCH_PAGE_BUTTON_BGD_COLOR,
+                                # ~ fg = SWITCH_PAGE_BUTTON_TXT_COLOR,
+                                # ~ borderwidth = 0,
+                                # ~ command = self.back_clicked)
+        # ~ self.back_button.pack(ipadx=30, ipady=10, side=LEFT)
 
-        self.next_button = Button(self.button_frame,
-                                text = "Next",
-                                font = SWITCH_PAGE_BUTTON_FONT,
-                                # width = SWITCH_PAGE_BUTTON_WIDTH,
-                                # height = SWITCH_PAGE_BUTTON_HEIGHT,
-                                bg = SWITCH_PAGE_BUTTON_BGD_COLOR,
-                                fg = SWITCH_PAGE_BUTTON_TXT_COLOR,
-                                borderwidth = 0,
-                                command = self.next_clicked)
-        self.next_button.pack(ipadx=30, ipady=10, side=RIGHT)
+        # ~ self.next_button = Button(self.button_frame,
+                                # ~ text = "Next",
+                                # ~ font = SWITCH_PAGE_BUTTON_FONT,
+                                # ~ bg = SWITCH_PAGE_BUTTON_BGD_COLOR,
+                                # ~ fg = SWITCH_PAGE_BUTTON_TXT_COLOR,
+                                # ~ borderwidth = 0,
+                                # ~ command = self.next_clicked)
+        # ~ self.next_button.pack(ipadx=30, ipady=10, side=RIGHT)
 
 
     def back_clicked(self):
@@ -765,11 +781,11 @@ class SystemCheckFrame(Frame):
             print("mode_check:", self.mode_check)
             if(self.mode_check == 0):
                 self.base_window.forget_page()
-                self.base_window.page_num = self.base_window.frame_list.index(self.base_window.new_qualitative_2)
+                self.base_window.page_num = self.base_window.frame_list.index(self.base_window.main_menu)
                 self.base_window.switch_page()
             elif(self.mode_check == 1):
                 self.base_window.forget_page()
-                self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_2)
+                self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_0)
                 self.base_window.switch_page()
             elif(self.mode_check == 2):
                 self.base_window.forget_page()
@@ -842,10 +858,10 @@ class SystemCheckFrame(Frame):
             print("self.mode_check: ", self.mode_check)
             try:
                 if(self.mode_check==0):
-                    camera_capture(results_programs_qualitative_path + self.base_window.new_qualitative_1.experiment_name + '/system_check_raw.jpg')
+                    camera_capture(system_check_path + 'system_check_raw.jpg')
                 elif(self.mode_check==1):
                     #camera_capture(self.base_window.qualitative_analysis_1.system_check_folder + '/system_check_raw.jpg')
-                    camera_capture(self.base_window.qualitative_analysis_0.system_check_folder + '/system_check_raw.jpg')
+                    camera_capture(system_check_path + 'system_check_raw.jpg')
                 elif(self.mode_check==2):
                     camera_capture(results_programs_quantitative_path + self.base_window.new_quantitative_1.experiment_name + '/system_check_raw.jpg')
                 elif(self.mode_check==3):
@@ -862,13 +878,13 @@ class SystemCheckFrame(Frame):
                     self.base_window.destroy()
 
             if(self.mode_check==0):
-                self.result, self.image = Process_Image(results_programs_qualitative_path + self.base_window.new_qualitative_1.experiment_name + '/system_check_raw.jpg').process(coefficient)
-                cv2.imwrite(results_programs_qualitative_path + self.base_window.new_qualitative_1.experiment_name + '/system_check_process.jpg', self.image)
+                self.result, self.image = Process_Image(system_check_path + 'system_check_raw.jpg').process(coefficient)
+                cv2.imwrite(system_check_path + 'system_check_process.jpg', self.image)
             elif(self.mode_check==1):
                 #self.result, self.image = Process_Image(self.base_window.qualitative_analysis_1.system_check_folder + '/system_check_raw.jpg').process(coefficient)
-                self.result, self.image = Process_Image(self.base_window.qualitative_analysis_0.system_check_folder + '/system_check_raw.jpg').process(coefficient)
+                self.result, self.image = Process_Image(system_check_path + 'system_check_raw.jpg').process(coefficient)
                 #cv2.imwrite(self.base_window.qualitative_analysis_1.system_check_folder + '/system_check_process.jpg', self.image)
-                cv2.imwrite(self.base_window.qualitative_analysis_0.system_check_folder + '/system_check_process.jpg', self.image)
+                cv2.imwrite(system_check_path + 'system_check_process.jpg', self.image)
             elif(self.mode_check==2):
                 self.result, self.image = Process_Image(results_programs_quantitative_path + self.base_window.new_quantitative_1.experiment_name + '/system_check_raw.jpg').process(coefficient)
                 cv2.imwrite(results_programs_quantitative_path + self.base_window.new_quantitative_1.experiment_name + '/system_check_process.jpg', self.image)
@@ -928,10 +944,10 @@ class SystemCheckFrame(Frame):
             sheet['I3'] = "Threshold: " + str(self.threshold)
 
             if(self.mode_check == 0):
-                wb.save(results_programs_qualitative_path + self.base_window.new_qualitative_1.experiment_name + "/nonsample_value.xlsx")
+                wb.save(system_check_path + "nonsample_value.xlsx")
             elif(self.mode_check == 1):
                 #wb.save(self.base_window.qualitative_analysis_1.system_check_folder + "/nonsample_value.xlsx")
-                wb.save(self.base_window.qualitative_analysis_0.system_check_folder + "/nonsample_value.xlsx")
+                wb.save(system_check_path + "nonsample_value.xlsx")
             elif(self.mode_check == 2):
                 wb.save(results_programs_quantitative_path + self.base_window.new_quantitative_1.experiment_name + "/nonsample_value.xlsx")
             elif(self.mode_check == 3):
@@ -998,23 +1014,43 @@ class SystemCheckFrame(Frame):
                     for i in range(0,48):
                         result_label[i]['bg'] = RESULT_LABEL_ERROR_BGD_COLOR
                     self.err = 0
-
+            
+            # Save time and value check
+            now = datetime.now()
+        
+            time1 = last_checkYear*31536000 + last_checkMonth*2419200 + last_checkDay*86400 + last_checkHour*3600 + last_checkMinute*60 + last_checkSecond
+            time2 = now.year*31536000 + last_checkMonth*2419200 + last_checkDay*86400 + last_checkHour*3600 + last_checkMinute*60 + last_checkSecond  
+            fw = open(working_dir + "/.system.txt",'w')
+            fw.writelines([str(now.day) + "\n",str(now.month) + "\n", str(now.year) + "\n", str(now.hour) + "\n", str(now.minute) + "\n", str(now.second) + "\n", str(self.threshold) + "\n"])
+            fw.close()
+            
             # Error handle
             if(self.err == 1):
                 msg = messagebox.showerror("ERR "+ str(ERROR_LIST['SYSTEM_ERROR_1'].value),
                                         ERROR_LIST(ERROR_LIST['SYSTEM_ERROR_1'].value).name,
                                         icon = "error")
+
             elif(self.err == 2):
                 msg = messagebox.showerror("ERR "+ str(ERROR_LIST['SYSTEM_ERROR_2'].value),
                                         ERROR_LIST(ERROR_LIST['SYSTEM_ERROR_2'].value).name,
                                         icon = "error")
+                err_msg = messagebox.askquestion("", "Do you want to check again ?")
+                if(err_msg == "yes"):
+                    self.check_result_frame.destroy()
+                    self.base_window.system_check.mode_check = 0
+                    self.base_window.forget_page()
+                    self.base_window.page_num = self.base_window.frame_list.index(self.base_window.system_check)
+                    self.base_window.switch_page()
+                    self.base_window.update_idletasks()
+                    self.base_window.system_check.serial_handle()
+                else:
+                    self.base_window.destroy()
             else:
-                msg = messagebox.showinfo("", "Finished checking !")
+                # ~ msg = messagebox.showinfo("", "Finished checking !")
+                self.next_clicked()
 
         else:
             self.back_clicked()
-
-
 
 class NewQualitativeFrame3(Frame):
     def __init__(self, container):
@@ -4511,31 +4547,31 @@ class QualitativeAnalysisFrame1(Frame):
         self.program_name = self.experiment_name_text.get("1.0","end-1c")
         # ~ self.program_name = self.base_window.qualitative_analysis_0.experiment_name
         if(len(self.program_name) != 0):
-            msg = messagebox.askokcancel("","Please make sure no sample is placed in the device !")
-            if(msg == True):
-                if os.path.exists(results_qualitative_path + self.program_name):
-                    self.program_path = results_qualitative_path + self.program_name
-                else:
-                    self.program_path = os.path.join(results_qualitative_path, self.program_name)
-                    os.mkdir(self.program_path)
+            # ~ msg = messagebox.askokcancel("","Please make sure no sample is placed in the device !")
+            # ~ if(msg == True):
+            if os.path.exists(results_qualitative_path + self.program_name):
+                self.program_path = results_qualitative_path + self.program_name
+            else:
+                self.program_path = os.path.join(results_qualitative_path, self.program_name)
+                os.mkdir(self.program_path)
 
-                self.create_time = strftime(" %y-%m-%d %H.%M.%S")
-                self.result_folder_name = self.base_window.qualitative_analysis_0.experiment_name + self.create_time
-                self.result_folder_path = os.path.join(self.program_path + '/', self.result_folder_name)
-                os.mkdir(self.result_folder_path)
-                print(self.result_folder_path)
+            self.create_time = strftime(" %y-%m-%d %H.%M.%S")
+            self.result_folder_name = self.base_window.qualitative_analysis_0.experiment_name + self.create_time
+            self.result_folder_path = os.path.join(self.program_path + '/', self.result_folder_name)
+            os.mkdir(self.result_folder_path)
+            print(self.result_folder_path)
 
-                self.system_check_folder = os.path.join(self.result_folder_path, "System_Check")
-                os.mkdir(self.system_check_folder)
+            self.system_check_folder = os.path.join(self.result_folder_path, "System_Check")
+            os.mkdir(self.system_check_folder)
 
-                self.analysis_result_folder = os.path.join(self.result_folder_path, "Analysis Results")
-                os.mkdir(self.analysis_result_folder)
+            self.analysis_result_folder = os.path.join(self.result_folder_path, "Analysis Results")
+            os.mkdir(self.analysis_result_folder)
 
-                self.base_window.system_check.mode_check = 1
-                self.base_window.forget_page()
-                self.base_window.page_num = self.base_window.frame_list.index(self.base_window.system_check)
-                self.base_window.switch_page()
-                self.base_window.system_check.serial_handle()
+            # ~ self.base_window.system_check.mode_check = 1
+            self.base_window.forget_page()
+            self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_2)
+            self.base_window.switch_page()
+            # ~ self.base_window.system_check.serial_handle()
 
         else:
             messagebox.showwarning("","Please select the kit !")
@@ -4800,40 +4836,36 @@ class QualitativeAnalysisFrame0(Frame):
         elif (self.user_name==''):
             messagebox.showwarning("","Plese enter User Name !")
         else:
-            msg = messagebox.askokcancel("","Please make sure no sample is placed in the device !")
-            if(msg == True):
-                ### NEW ADD - START ###
-                self.create_time = strftime("%y-%m-%d") 
-                self.result_folder_name_0 = self.create_time
-                
-                if not os.path.exists(results_path + self.result_folder_name_0):
-                     self.result_folder_path_0  = os.path.join(results_path , self.result_folder_name_0)
-                     os.mkdir(self.result_folder_path_0)
-                else:
-                    self.result_folder_path_0 = results_path +  self.result_folder_name_0
-                    
-                self.result_folder_name = self.experiment_name
-                self.result_folder_path = os.path.join(self.result_folder_path_0, self.result_folder_name)
-                os.mkdir(self.result_folder_path)
-                print(self.result_folder_path)
-                
-                self.system_check_folder = os.path.join(self.result_folder_path, "System_Check")
-                os.mkdir(self.system_check_folder)
 
-                self.analysis_result_folder = os.path.join(self.result_folder_path, "Analysis Results")
-                os.mkdir(self.analysis_result_folder)
+            ### NEW ADD - START ###
+            self.create_time = strftime("%y-%m-%d") 
+            self.result_folder_name_0 = self.create_time
+            
+            if not os.path.exists(results_path + self.result_folder_name_0):
+                 self.result_folder_path_0  = os.path.join(results_path , self.result_folder_name_0)
+                 os.mkdir(self.result_folder_path_0)
+            else:
+                self.result_folder_path_0 = results_path +  self.result_folder_name_0
                 
-                self.base_window.system_check.mode_check = 1
-                ### NEW ADD - END ###
-                
-                self.base_window.forget_page()
-                #self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_1)
-                self.base_window.page_num = self.base_window.frame_list.index(self.base_window.system_check)
-                self.base_window.switch_page()
-                
-                ### NEW ADD - START ###
-                self.base_window.system_check.serial_handle()
-                ### NEW ADD - END ###
+            self.result_folder_name = self.experiment_name
+            self.result_folder_path = os.path.join(self.result_folder_path_0, self.result_folder_name)
+            os.mkdir(self.result_folder_path)
+            print(self.result_folder_path)
+            
+            self.system_check_folder = os.path.join(self.result_folder_path, "System_Check")
+            os.mkdir(self.system_check_folder)
+
+            self.analysis_result_folder = os.path.join(self.result_folder_path, "Analysis Results")
+            os.mkdir(self.analysis_result_folder)
+            
+            # ~ self.base_window.system_check.mode_check = 1
+            ### NEW ADD - END ###
+            
+            self.base_window.forget_page()
+            #self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_1)
+            self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_2)
+            self.base_window.switch_page()
+
 
 class QuantitativeAnalysisFrame0(QualitativeAnalysisFrame0):
     def __init__(self, container):
@@ -6591,7 +6623,7 @@ class ConnectFrame(QualitativeOptionFrame):
         self['bg'] = MAIN_FUNCTION_FRAME_BGD_COLOR
         self.base_window = container
 
-        self.title_label['text'] = 'SETTING'
+        self.title_label['text'] = 'CONNECTIVITY'
 
         self.calibration_button['text'] = "Email"
         self.analysis_button['text'] = "Server"
@@ -6746,16 +6778,14 @@ class MainMenu(Frame):
                                     command = self.connect_clicked)
         self.connect_button.pack(side=LEFT, fill=BOTH, expand=TRUE)
         
-        self.setting_button = Button(self.button_frame,
-                                    text = "Setting",
-                                    font = MAIN_MENU_BUTTON_FONT,
-                                    bg = MAIN_MENU_BUTTON_BGD_COLOR,
-                                    fg = MAIN_MENU_BUTTON_TXT_COLOR,
-                                    # ~ width = 16,
-                                    # ~ height = 2,
-                                    borderwidth = 0,
-                                    command = self.setting_clicked)
-        self.setting_button.pack(side=LEFT, fill=BOTH, expand=TRUE)
+        # ~ self.setting_button = Button(self.button_frame,
+                                    # ~ text = "Setting",
+                                    # ~ font = MAIN_MENU_BUTTON_FONT,
+                                    # ~ bg = MAIN_MENU_BUTTON_BGD_COLOR,
+                                    # ~ fg = MAIN_MENU_BUTTON_TXT_COLOR,
+                                    # ~ borderwidth = 0,
+                                    # ~ command = self.setting_clicked)
+        # ~ self.setting_button.pack(side=LEFT, fill=BOTH, expand=TRUE)
 
         self.exit_button = Button(self.button_frame,
                                     text = "Exit",
@@ -6806,9 +6836,7 @@ class MainMenu(Frame):
                     borderwidth = 0,
                     command = self.cancel_clicked)
         self.cancel_button.place(x=272,y=-19)
-        
-        
-        
+    
         # ~ self.base_window.forget_page()
         # ~ #self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_option)
         # ~ self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_0)
@@ -6823,10 +6851,43 @@ class MainMenu(Frame):
         self.num2 = float(fr.readline())
         self.num3 = float(fr.readline())
         
-        self.base_window.forget_page()
-        self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_0)
-        self.base_window.switch_page()
+        ####### SYSTEM CHECK ########
+        global last_checkDate, last_checkMonth, last_checkYear, last_checkHour, last_checkMinute, last_checkSecond, last_checkValue
+        fr = open(working_dir + "/.system.txt","r")
+        last_checkDay = int(fr.readline())
+        last_checkMonth = int(fr.readline())
+        last_checkYear = int(fr.readline())
+        last_checkHour = int(fr.readline())
+        last_checkMinute = int(fr.readline())
+        last_checkSecond = int(fr.readline())
+        last_checkValue = float(fr.readline())
         
+        now = datetime.now()
+        
+        time1 = last_checkYear*31536000 + last_checkMonth*2419200 + last_checkDay*86400 + last_checkHour*3600 + last_checkMinute*60 + last_checkSecond
+        time2 = now.year*31536000 + now.month*2419200 + now.day*86400 + now.hour*3600 + now.minute*60 + now.second         
+        number_of_hours = round(abs((time2 - time1)/3600),1)
+        
+        print("number_of_hours: ", number_of_hours)
+        
+        if(number_of_hours >= 1):
+            msg = messagebox.askquestion("","It's been a while since the last system check, would you like to check again ?")
+            if(msg == 'yes'):
+                self.system_check.mode_check = 1
+                self.forget_page()
+                self.page_num = self.frame_list.index(self.system_check)
+                self.switch_page()
+                self.update_idletasks()
+                self.system_check.serial_handle()
+            else:
+                self.base_window.forget_page()
+                self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_0)
+                self.base_window.switch_page()
+        else:
+            self.base_window.forget_page()
+            self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_0)
+            self.base_window.switch_page()
+            
     def thr2_clicked(self):
         self.threshold_label_frame.place_forget()
         
@@ -6836,9 +6897,42 @@ class MainMenu(Frame):
         self.num2 = float(fr.readline())
         self.num3 = float(fr.readline())
         
-        self.base_window.forget_page()
-        self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_0)
-        self.base_window.switch_page()
+        ####### SYSTEM CHECK ########
+        global last_checkDate, last_checkMonth, last_checkYear, last_checkHour, last_checkMinute, last_checkSecond, last_checkValue
+        fr = open(working_dir + "/.system.txt","r")
+        last_checkDay = int(fr.readline())
+        last_checkMonth = int(fr.readline())
+        last_checkYear = int(fr.readline())
+        last_checkHour = int(fr.readline())
+        last_checkMinute = int(fr.readline())
+        last_checkSecond = int(fr.readline())
+        last_checkValue = float(fr.readline())
+        
+        now = datetime.now()
+        
+        time1 = last_checkYear*31536000 + last_checkMonth*2419200 + last_checkDay*86400 + last_checkHour*3600 + last_checkMinute*60 + last_checkSecond
+        time2 = now.year*31536000 + now.month*2419200 + now.day*86400 + now.hour*3600 + now.minute*60 + now.second  
+        number_of_hours = round(abs((time2 - time1)/3600),1)
+        
+        print("number_of_hours: ", number_of_hours)
+        
+        if(number_of_hours >= 1):
+            msg = messagebox.askquestion("","It's been a while since the last system check, would you like to check again ?")
+            if(msg == 'yes'):
+                self.system_check.mode_check = 1
+                self.forget_page()
+                self.page_num = self.frame_list.index(self.system_check)
+                self.switch_page()
+                self.update_idletasks()
+                self.system_check.serial_handle()
+            else:
+                self.base_window.forget_page()
+                self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_0)
+                self.base_window.switch_page()
+        else:
+            self.base_window.forget_page()
+            self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_0)
+            self.base_window.switch_page()
         
     def cancel_clicked(self):
         try:
@@ -6873,14 +6967,20 @@ class MainMenu(Frame):
         self.base_window.switch_page()
 
     def connect_clicked(self):
-        self.threshold_label_frame.place_forget()
+        try:
+            self.threshold_label_frame.place_forget()
+        except:
+            pass 
         
         self.base_window.forget_page()
         self.base_window.page_num = self.base_window.frame_list.index(self.base_window.connect)
         self.base_window.switch_page()
         
     def setting_clicked(self):
-        self.threshold_label_frame.place_forget()
+        try:
+            self.threshold_label_frame.place_forget()
+        except:
+            pass
         
         self.base_window.forget_page()
         self.base_window.page_num = self.base_window.frame_list.index(self.base_window.setting)
@@ -7043,6 +7143,7 @@ class MainWindow(Tk):
         self.frame_list.append(self.setting) 
 
         self.switch_page()
+        self.system_check_light()
 
     def forget_page(self):
         self.frame_list[self.page_num].forget()
@@ -7055,7 +7156,33 @@ class MainWindow(Tk):
         self.qualitative_analysis_3.update_idletasks()
         # ~ self.update()
         # ~ self.update_idletasks()
-
+        
+    def system_check_light(self):
+        # ~ global last_checkDate, last_checkMonth, last_checkYear, last_checkHour, last_checkMinute, last_checkSecond, last_checkValue
+        # ~ fr = open(working_dir + "/.system.txt","r")
+        # ~ last_checkDay = int(fr.readline())
+        # ~ last_checkMonth = int(fr.readline())
+        # ~ last_checkYear = int(fr.readline())
+        # ~ last_checkHour = int(fr.readline())
+        # ~ last_checkMinute = int(fr.readline())
+        # ~ last_checkSecond = int(fr.readline())
+        # ~ last_checkValue = float(fr.readline())
+        
+        # ~ now = datetime.now()
+        
+        # ~ time1 = last_checkYear*31536000 + last_checkMonth*2419200 + last_checkDay*86400 + last_checkHour*3600 + last_checkMinute*60 + last_checkSecond
+        # ~ time2 = now.year*31536000 + last_checkMonth*2419200 + last_checkDay*86400 + last_checkHour*3600 + last_checkMinute*60 + last_checkSecond  
+        
+        # ~ number_of_hours = abs((time2 - time1)/3600)
+        
+        # ~ if(number_of_hours >= 1):
+        self.system_check.mode_check = 0
+        self.forget_page()
+        self.page_num = self.frame_list.index(self.system_check)
+        self.switch_page()
+        self.update_idletasks()
+        self.system_check.serial_handle()
+    
 if __name__ == "__main__":
     app = MainWindow()
     app.mainloop()
