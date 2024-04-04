@@ -1013,7 +1013,7 @@ class SystemCheckFrame(Frame):
                 self.average_current_intensity < average_base_intensity - average_base_intensity*30/100):
                     for i in range(0,48):
                         result_label[i]['bg'] = RESULT_LABEL_ERROR_BGD_COLOR
-                    self.err = 0
+                    self.err = 2
             
             # Save time and value check
             now = datetime.now()
@@ -1029,6 +1029,17 @@ class SystemCheckFrame(Frame):
                 msg = messagebox.showerror("ERR "+ str(ERROR_LIST['SYSTEM_ERROR_1'].value),
                                         ERROR_LIST(ERROR_LIST['SYSTEM_ERROR_1'].value).name,
                                         icon = "error")
+                err_msg = messagebox.askquestion("", "Do you want to check again ?")
+                if(err_msg == "yes"):
+                    self.check_result_frame.destroy()
+                    self.base_window.system_check.mode_check = 0
+                    self.base_window.forget_page()
+                    self.base_window.page_num = self.base_window.frame_list.index(self.base_window.system_check)
+                    self.base_window.switch_page()
+                    self.base_window.update_idletasks()
+                    self.base_window.system_check.serial_handle()
+                else:
+                    self.next_clicked()
 
             elif(self.err == 2):
                 msg = messagebox.showerror("ERR "+ str(ERROR_LIST['SYSTEM_ERROR_2'].value),
