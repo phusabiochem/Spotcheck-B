@@ -797,6 +797,11 @@ class SystemCheckFrame(Frame):
                 self.base_window.switch_page()
 
     def serial_handle(self):
+        try:
+            self.check_result_frame.destroy()
+        except:
+            pass
+		
         style = ttk.Style()
         style.theme_use('clam')
         style.configure("1.Horizontal.TProgressbar", troughcolor ='grey85', background='green3')
@@ -6881,15 +6886,15 @@ class MainMenu(Frame):
         
         print("number_of_hours: ", number_of_hours)
         
-        if(number_of_hours >= 1):
+        if(number_of_hours >= 0):
             msg = messagebox.askquestion("","It's been a while since the last system check, would you like to check again ?")
             if(msg == 'yes'):
-                self.system_check.mode_check = 1
-                self.forget_page()
-                self.page_num = self.frame_list.index(self.system_check)
-                self.switch_page()
-                self.update_idletasks()
-                self.system_check.serial_handle()
+                self.base_window.system_check.mode_check = 1
+                self.base_window.forget_page()
+                self.base_window.page_num = self.base_window.frame_list.index(self.base_window.system_check)
+                self.base_window.switch_page()
+                self.base_window.update_idletasks()
+                self.base_window.system_check.serial_handle()
             else:
                 self.base_window.forget_page()
                 self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_0)
@@ -6930,12 +6935,12 @@ class MainMenu(Frame):
         if(number_of_hours >= 1):
             msg = messagebox.askquestion("","It's been a while since the last system check, would you like to check again ?")
             if(msg == 'yes'):
-                self.system_check.mode_check = 1
-                self.forget_page()
-                self.page_num = self.frame_list.index(self.system_check)
-                self.switch_page()
-                self.update_idletasks()
-                self.system_check.serial_handle()
+                self.base_window.system_check.mode_check = 1
+                self.base_window.forget_page()
+                self.base_window.page_num = self.base_window.frame_list.index(self.base_window.system_check)
+                self.base_window.switch_page()
+                self.base_window.update_idletasks()
+                self.base_window.system_check.serial_handle()
             else:
                 self.base_window.forget_page()
                 self.base_window.page_num = self.base_window.frame_list.index(self.base_window.qualitative_analysis_0)
