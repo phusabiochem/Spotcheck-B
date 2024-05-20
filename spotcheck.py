@@ -6886,7 +6886,7 @@ class MainMenu(Frame):
         
         print("number_of_hours: ", number_of_hours)
         
-        if(number_of_hours >= 0):
+        if(number_of_hours >= 1):
             msg = messagebox.askquestion("","It's been a while since the last system check, would you like to check again ?")
             if(msg == 'yes'):
                 self.base_window.system_check.mode_check = 1
@@ -7011,7 +7011,7 @@ class MainMenu(Frame):
         self.base_window.frame_list.remove(self.base_window.new_qualitative_1)
         self.base_window.frame_list.remove(self.base_window.new_qualitative_2)
         self.base_window.frame_list.remove(self.base_window.new_qualitative_3)
-        self.base_window.frame_list.remove(self.base_window.system_check)
+        # ~ self.base_window.frame_list.remove(self.base_window.system_check)
         self.base_window.frame_list.remove(self.base_window.qualitative_analysis_1)
         self.base_window.frame_list.remove(self.base_window.qualitative_analysis_2)
         self.base_window.frame_list.remove(self.base_window.qualitative_analysis_3)
@@ -7030,7 +7030,7 @@ class MainMenu(Frame):
         del self.base_window.new_qualitative_1
         del self.base_window.new_qualitative_2
         del self.base_window.new_qualitative_3
-        del self.base_window.system_check
+        # ~ del self.base_window.system_check
         del self.base_window.qualitative_analysis_1
         del self.base_window.qualitative_analysis_2
         del self.base_window.qualitative_analysis_3
@@ -7049,7 +7049,7 @@ class MainMenu(Frame):
         self.base_window.new_qualitative_1 = NewQualitativeFrame1(self.base_window)
         self.base_window.new_qualitative_2 = NewQualitativeFrame2(self.base_window)
         self.base_window.new_qualitative_3 = NewQualitativeFrame3(self.base_window)
-        self.base_window.system_check = SystemCheckFrame(self.base_window)
+        # ~ self.base_window.system_check = SystemCheckFrame(self.base_window)
         self.base_window.qualitative_analysis_1 = QualitativeAnalysisFrame1(self.base_window)
         self.base_window.qualitative_analysis_2 = QualitativeAnalysisFrame2(self.base_window)
         self.base_window.qualitative_analysis_3 = QualitativeAnalysisFrame3(self.base_window)
