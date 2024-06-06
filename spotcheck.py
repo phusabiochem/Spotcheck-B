@@ -1018,7 +1018,7 @@ class SystemCheckFrame(Frame):
 				self.average_current_intensity < average_base_intensity - average_base_intensity*30/100):
 					for i in range(0,48):
 						result_label[i]['bg'] = RESULT_LABEL_ERROR_BGD_COLOR
-					self.err = 2
+					self.err = 0
 			
 			# Save time and value check
 			now = datetime.now()
@@ -5332,11 +5332,71 @@ class IDCreateFrame(Frame):
 				if(self.direct_create == 0): #create file with create module from main menu
 					self.back_clicked()
 				elif(self.direct_create==1): #create file with create module from qualitative_analysis_2
-					for i in range(0,48):
-						if(self.well_button[i]['text'][0] != '#'):
-							self.base_window.qualitative_analysis_2.id_list[i] = self.well_button[i]['text']
-						else:
-							self.base_window.qualitative_analysis_2.id_list[i] = 'N/A'
+					
+					wb = load_workbook(id_path + '/' + self.base_window.qualitative_analysis_0.experiment_name + '.xlsm')
+					sheet = wb.active					
+					self.base_window.qualitative_analysis_2.id_list[0] = sheet["B12"].value
+					self.base_window.qualitative_analysis_2.id_list[1] = sheet["B20"].value
+					self.base_window.qualitative_analysis_2.id_list[2] = sheet["B28"].value
+					self.base_window.qualitative_analysis_2.id_list[3] = sheet["B36"].value
+					self.base_window.qualitative_analysis_2.id_list[4] = sheet["B44"].value
+					self.base_window.qualitative_analysis_2.id_list[5] = sheet["B52"].value
+					
+					self.base_window.qualitative_analysis_2.id_list[6] = sheet["B13"].value
+					self.base_window.qualitative_analysis_2.id_list[7] = sheet["B21"].value
+					self.base_window.qualitative_analysis_2.id_list[8] = sheet["B29"].value
+					self.base_window.qualitative_analysis_2.id_list[9] = sheet["B37"].value
+					self.base_window.qualitative_analysis_2.id_list[10] = sheet["B45"].value
+					self.base_window.qualitative_analysis_2.id_list[11] = sheet["B53"].value
+					
+					self.base_window.qualitative_analysis_2.id_list[12] = sheet["B14"].value
+					self.base_window.qualitative_analysis_2.id_list[13] = sheet["B22"].value
+					self.base_window.qualitative_analysis_2.id_list[14] = sheet["B30"].value
+					self.base_window.qualitative_analysis_2.id_list[15] = sheet["B38"].value
+					self.base_window.qualitative_analysis_2.id_list[16] = sheet["B46"].value
+					self.base_window.qualitative_analysis_2.id_list[17] = sheet["B54"].value
+					
+					self.base_window.qualitative_analysis_2.id_list[18] = sheet["B15"].value
+					self.base_window.qualitative_analysis_2.id_list[19] = sheet["B23"].value
+					self.base_window.qualitative_analysis_2.id_list[20] = sheet["B31"].value
+					self.base_window.qualitative_analysis_2.id_list[21] = sheet["B39"].value
+					self.base_window.qualitative_analysis_2.id_list[22] = sheet["B47"].value
+					self.base_window.qualitative_analysis_2.id_list[23] = sheet["B55"].value
+					
+					self.base_window.qualitative_analysis_2.id_list[24] = sheet["B16"].value
+					self.base_window.qualitative_analysis_2.id_list[25] = sheet["B24"].value
+					self.base_window.qualitative_analysis_2.id_list[26] = sheet["B32"].value
+					self.base_window.qualitative_analysis_2.id_list[27] = sheet["B40"].value
+					self.base_window.qualitative_analysis_2.id_list[28] = sheet["B48"].value
+					self.base_window.qualitative_analysis_2.id_list[29] = sheet["B56"].value
+					
+					self.base_window.qualitative_analysis_2.id_list[30] = sheet["B17"].value
+					self.base_window.qualitative_analysis_2.id_list[31] = sheet["B25"].value
+					self.base_window.qualitative_analysis_2.id_list[32] = sheet["B33"].value
+					self.base_window.qualitative_analysis_2.id_list[33] = sheet["B41"].value
+					self.base_window.qualitative_analysis_2.id_list[34] = sheet["B49"].value
+					self.base_window.qualitative_analysis_2.id_list[35] = sheet["B57"].value
+					
+					self.base_window.qualitative_analysis_2.id_list[36] = sheet["B18"].value
+					self.base_window.qualitative_analysis_2.id_list[37] = sheet["B26"].value
+					self.base_window.qualitative_analysis_2.id_list[38] = sheet["B34"].value
+					self.base_window.qualitative_analysis_2.id_list[39] = sheet["B42"].value
+					self.base_window.qualitative_analysis_2.id_list[40] = sheet["B50"].value
+					self.base_window.qualitative_analysis_2.id_list[41] = sheet["B58"].value
+					
+					self.base_window.qualitative_analysis_2.id_list[42] = sheet["B19"].value
+					self.base_window.qualitative_analysis_2.id_list[43] = sheet["B27"].value
+					self.base_window.qualitative_analysis_2.id_list[44] = sheet["B35"].value
+					self.base_window.qualitative_analysis_2.id_list[45] = sheet["B43"].value
+					self.base_window.qualitative_analysis_2.id_list[46] = sheet["B51"].value
+					self.base_window.qualitative_analysis_2.id_list[47] = sheet["B59"].value
+			
+					
+					# ~ for i in range(0,48):
+						# ~ if(self.well_button[i]['text'][0] != '#' or self.well_button[i]['text'][0] != 'N/A'):
+							# ~ self.base_window.qualitative_analysis_2.id_list[i] = self.well_button[i]['text']
+						# ~ else:
+							# ~ self.base_window.qualitative_analysis_2.id_list[i] = 'N/A'
 
 					self.base_window.qualitative_analysis_2.id_file_name_label['text'] = file_name
 					self.base_window.qualitative_analysis_2.id_file_name_label['bg'] = 'lawn green'
@@ -5369,13 +5429,12 @@ class IDCreateFrame(Frame):
 						# ~ self.base_window.qualitative_analysis_2.tooltip[i].bind(self.base_window.qualitative_analysis_2.id_label[i], self.base_window.qualitative_analysis_2.id_list[i])
 
 
-						if(self.well_button[i]['text'][0] != '#'):
+						if(self.base_window.qualitative_analysis_2.id_list[i] != '#' and self.base_window.qualitative_analysis_2.id_list[i] != 'N/A'):
 							self.base_window.qualitative_analysis_2.id_label[i]['bg'] = "lawn green"
 							self.base_window.qualitative_analysis_2.id_label[i]['text'] = self.base_window.qualitative_analysis_2.id_list[i]
 						else:
 							self.base_window.qualitative_analysis_2.id_label[i]['bg'] = "grey80"
 							self.base_window.qualitative_analysis_2.id_label[i]['text'] = "N/A"
-
 
 						self.base_window.qualitative_analysis_2.id_label[i].grid(row=r, column=c, padx=1, pady=1)
 					
