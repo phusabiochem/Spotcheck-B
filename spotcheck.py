@@ -529,7 +529,9 @@ class AutoMail():
 	#     emailData.attach(imageData)
 
 		with open(self.zip_file,'rb') as file:
-			emailData.attach(MIMEApplication(file.read(), Name= self.zip_file_name + '.zip'))
+			# emailData.attach(MIMEApplication(file.read(), Name= self.zip_file_name + '.zip'))
+			emailData.attach(MIMEApplication(file.read(), Name= self.zip_file_name + '.xlsx'))
+
 
 		session = smtplib.SMTP(self.SMTP_SERVER, self.SMTP_PORT)
 		session.ehlo()
@@ -2740,23 +2742,24 @@ class QualitativeAnalysisFrame3(Frame):
 			subprocess.call(["scrot", self.base_window.qualitative_analysis_0.result_folder_path + "/result_capture.jpg"])
 
 			self.base_window.server_setting.check_status()
-			if(self.base_window.server_setting.server_active==1):
-				ftp = FTP(self.base_window.server_setting.ip_set, self.base_window.server_setting.user_set, self.base_window.server_setting.password_set, timeout=30)
-				ftp.cwd(self.base_window.server_setting.path_set + '/TemplateBlank')
+			# if(self.base_window.server_setting.server_active==1):
+			# 	ftp = FTP(self.base_window.server_setting.ip_set, self.base_window.server_setting.user_set, self.base_window.server_setting.password_set, timeout=30)
+			# 	ftp.cwd(self.base_window.server_setting.path_set + '/TemplateBlank')
 				
-				localfolder = os.path.join(working_dir, 'template.xlsm')
-				file = open(localfolder,'wb')
-				ftp.retrbinary('RETR ' + 'template.xlsm', file.write)
-				file.close()
+			# 	localfolder = os.path.join(working_dir, 'template.xlsm')
+			# 	file = open(localfolder,'wb')
+			# 	ftp.retrbinary('RETR ' + 'template.xlsm', file.write)
+			# 	file.close()
 				
-				ftp.quit()
+			# 	ftp.quit()
 				
-				#wb = load_workbook(working_dir + '/template.xlsm', keep_vba = True)
-				wb = load_workbook(self.base_window.qualitative_analysis_2.id_file_path)
-				sheet = wb.active
-			else:
-				wb = Workbook()
-				sheet = wb.active
+			# 	#wb = load_workbook(working_dir + '/template.xlsm', keep_vba = True)
+			# 	wb = load_workbook(self.base_window.qualitative_analysis_2.id_file_path)
+			# 	sheet = wb.active
+			# else:
+			wb = Workbook()
+			sheet = wb.active
+
 
 			font0 = Font(bold=False)
 			font1 = Font(size='14', bold=True, color='00FF0000')
@@ -2772,11 +2775,17 @@ class QualitativeAnalysisFrame3(Frame):
 				sheet["B"+str(i)].font = font0
 				sheet["D"+str(i)].font = font0
 
-			# ~ img = Img(working_dir + "/logo.png")
-			# ~ img.height = 39
-			# ~ img.width = 215
-			# ~ img.anchor = 'B2'
-			# ~ sheet.add_image(img)
+			img = Img(working_dir + "/logo.png")
+			img.height = 39
+			img.width = 215
+			img.anchor = 'B2'
+			sheet.add_image(img)
+
+			img = Img(self.base_window.qualitative_analysis_0.result_folder_path + "/result_capture.jpg")
+			img.anchor = 'H11'
+			sheet.add_image(img)
+
+			sheet["C10"] = self.base_window.qualitative_analysis_0.template_name
 
 			sheet.merge_cells(start_row=5, start_column=2, end_row=5, end_column=6)
 			sheet["B5"] = 'ANALYSIS RESULTS'
@@ -3211,9 +3220,9 @@ class QualitativeAnalysisFrame3(Frame):
 
 	def automail_check(self):
 		if(self.base_window.email_setting.account_active == 1 and self.base_window.qualitative_analysis_2.automail_is_on == 1):
-			shutil.make_archive(self.base_window.qualitative_analysis_0.result_folder_path,
-								format='zip',
-								root_dir = self.base_window.qualitative_analysis_0.result_folder_path)
+			# shutil.make_archive(self.base_window.qualitative_analysis_0.result_folder_path,
+			# 					format='zip',
+			# 					root_dir = self.base_window.qualitative_analysis_0.result_folder_path)
 			# ~ try:
 			AutoMail(
 				self.base_window.email_setting.email_address,
@@ -3221,8 +3230,9 @@ class QualitativeAnalysisFrame3(Frame):
 				self.base_window.qualitative_analysis_2.recipient_email,
 				"Spotcheck Result",
 				"This is an automatic email from Spotcheck device.",
-				self.base_window.qualitative_analysis_0.result_folder_path + '.zip',
-				self.base_window.qualitative_analysis_0.result_folder_name).send()
+				# self.base_window.qualitative_analysis_0.result_folder_path + '.zip',
+				self.base_window.qualitative_analysis_0.result_folder_path +  '/' + self.base_window.qualitative_analysis_0.experiment_name + '.xlsx',
+				self.base_window.qualitative_analysis_0.experiment_name).send()
 			# ~ except:
 				# ~ messagebox.showerror("","ERR 04")
 				# ~ pass
@@ -4800,19 +4810,19 @@ class QualitativeAnalysisFrame0(Frame):
 								fg = LABEL_TXT_COLOR)
 		user_name_label.grid(row=1, column=1, sticky=E, pady=20, padx=10)
 
-		# ~ comment_label = Label(setup_labelframe,
-								# ~ text = "Comment",
-								# ~ font = LABEL_TXT_FONT,
-								# ~ bg = LABEL_BGD_COLOR,
-								# ~ fg = LABEL_TXT_COLOR)
-		# ~ comment_label.grid(row=2, column=1, sticky=NE, pady=20, padx=30)
+		template_name_label = Label(setup_labelframe,
+								text = "Template name :",
+								font = ('Helvetica', 10, 'bold'),
+								bg = LABEL_BGD_COLOR,
+								fg = LABEL_TXT_COLOR)
+		template_name_label.grid(row=2, column=1, sticky=NE, pady=20, padx=30)
 
 		self.experiment_name_entry = Entry(setup_labelframe, width=30, font=ENTRY_TXT_FONT)
 		self.experiment_name_entry.grid(row=0, column=2, sticky=W, pady=20, padx=20)
 		self.user_name_entry = Entry(setup_labelframe, width=30, font=ENTRY_TXT_FONT)
 		self.user_name_entry.grid(row=1, column=2, sticky=W, pady=20, padx=20)
-		# ~ self.comments_text = Text(setup_labelframe, width=30, height=9, font=ENTRY_TXT_FONT)
-		# ~ self.comments_text.grid(row=2, column=2, sticky=E, pady=20, padx=35)
+		self.template_name_entry = Entry(setup_labelframe, width=30, font=ENTRY_TXT_FONT)
+		self.template_name_entry.grid(row=2, column=2, sticky=W, pady=20, padx=20)
 
 		# In button frame
 		self.back_button = Button(self.button_frame,
@@ -4847,10 +4857,13 @@ class QualitativeAnalysisFrame0(Frame):
 	def next_clicked(self):
 		self.experiment_name = self.experiment_name_entry.get()
 		self.user_name = self.user_name_entry.get()
+		self.template_name = self.template_name_entry.get()
 		if(self.experiment_name==''):
 			messagebox.showwarning("","Plese enter Folder Name !")
 		elif (self.user_name==''):
 			messagebox.showwarning("","Plese enter User Name !")
+		elif(self.template_name == ''):
+			messagebox.showwarning("","Plese enter Template Name !")
 		else:
 
 			### NEW ADD - START ###
